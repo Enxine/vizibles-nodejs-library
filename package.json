@@ -1,7 +1,7 @@
 {
   "name": "vizibles-clients",
-  "version": "1.1.1",
-  "description": "Librerías de acceso a Vizibles para distintos clientes",
+  "version": "1.1.2",
+  "description": "Library to connect with Vizibles from Node.js clients",
   "repository": {
     "type": "git",
     "url": "http://enxine.com:8070/enxine/vizibles.git"
