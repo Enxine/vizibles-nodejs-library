@@ -4,7 +4,7 @@
   "description": "Library to connect with Vizibles from Node.js clients",
   "repository": {
     "type": "git",
-    "url": "http://enxine.com:8070/enxine/vizibles.git"
+    "url": "https://github.com/Enxine/vizibles-clients"
   },
   "author": "Enxine",
   "license": "BSD-2-Clause",
