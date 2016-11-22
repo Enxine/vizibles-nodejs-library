@@ -1,6 +1,6 @@
 {
   "name": "vizibles-clients",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Library to connect with Vizibles from Node.js clients",
   "repository": {
     "type": "git",
