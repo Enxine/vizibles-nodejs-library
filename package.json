@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/Enxine/vizibles-clients"
   },
-  "author": "Enxine",
+  "author": "Enxine <info@vizibles.com> (https://vizibles.com)",
   "license": "BSD-2-Clause",
   "dependencies": {
     "async": "~0.9.0",
