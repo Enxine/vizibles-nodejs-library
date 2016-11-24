@@ -36,7 +36,7 @@ function downTargetTemperature (n) {
 }
 
 function onConnected() {
-    console.log('[air-conditioner-apikey] onConnected()');
+    console.log('[air-conditioner] onConnected()');
     if (!cloudConnectionOpened) {
         cloudConnectionOpened = true;
         Cloud.expose('setTarget', setTargetTemperature);
@@ -51,7 +51,7 @@ function onConnected() {
 }
 
 function onDisconnected(err) {
-    console.log('[air-conditioner-apikey] onDisconnected(' + err + ')');
+    console.log('[air-conditioner] onDisconnected(' + err + ')');
     cloudConnectionOpened = false;
 }
 

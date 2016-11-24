@@ -34,7 +34,5 @@ function onDisconnected(err) {
 Cloud.connect({
     id: 'light-bulb',
     credentials: config.defaults.apiKey, 
-    // Credentials for user (jamartinez@enxine.com) w71mcIHmwCoO~~
-    // credentials: {keyId: 'QJG40UdBzDGQ', secret: 'zjej4G65cntPgjadbHz6'}, 
     onConnected: onConnected, 
     onDisconnected: onDisconnected});

@@ -25,14 +25,5 @@ Cloud.connect({
     id: 'light-switch',
     server: {enabled: false},
     credentials: config.defaults.apiKey, 
-
-    // Credentials for user (jamartinez@enxine.com) w71mcIHmwCoO~~
-    // credentials: {keyId: 'nf9WxOwPdxWK', secret: 'PMd40WOGGfxIHAUtl8QE'},
-
-    // Other settings for testing
-    //protocol: 'http',
-    //port: 8181,
-    //server: {enabled: true, port: 5001},
-    
     onConnected: onConnected, 
     onDisconnected: onDisconnected});

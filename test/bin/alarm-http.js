@@ -30,6 +30,8 @@ function onDisconnected(err) {
 
 Cloud.connect({
     id:'alarm',
+    protocol: 'http',
+    port: 80,
     credentials: config.defaults.apiKey,
     onConnected: onConnected,
     onDisconnected: onDisconnected});
