@@ -1,31 +1,31 @@
 {
-    "name": "vizibles-clients",
-    "version": "1.1.6",
-    "description": "Library to connect with Vizibles from Node.js clients",
-    "keywords": [
-        "vizibles",
-        "iot",
-        "internet of things",
-        "things"
-    ],
-    "homepage": "https://vizibles.com",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Enxine/vizibles-clients"
-    },
-    "author": "Enxine <info@vizibles.com> (https://vizibles.com)",
-    "license": "BSD-2-Clause",
-    "dependencies": {
-        "async": "~0.9.0",
-        "lodash": "~3.1.0",
-        "request": "^2.72.0",
-        "ws": "~1.0.1"
-    },
-    "devDependencies": {
-        "log-timestamp": "^0.1.2"
-    },
-    "main": "cloud.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    }
+  "name": "vizibles-clients",
+  "version": "1.1.7",
+  "description": "Library to connect with Vizibles from Node.js clients",
+  "keywords": [
+    "vizibles",
+    "iot",
+    "internet of things",
+    "things"
+  ],
+  "homepage": "https://vizibles.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Enxine/vizibles-clients"
+  },
+  "author": "Enxine <info@vizibles.com> (https://vizibles.com)",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "async": "~0.9.0",
+    "lodash": "~3.1.0",
+    "request": "^2.72.0",
+    "ws": "~1.0.1"
+  },
+  "devDependencies": {
+    "log-timestamp": "^0.1.2"
+  },
+  "main": "cloud.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
