@@ -1,5 +1,5 @@
 ### 1. Install
-The client library for [Node.js](https://nodejs.org) is distributed as an npm package and can be installed from [here](https://www.npmjs.com/package/vizibles-clients).
+The client library for [Node.js](https://nodejs.org) is distributed as an npm package and can be installed from [here](https://www.npmjs.com/package/vizibles).
 
 ### 2. Public functions:
 All library functionallity is accessed by means of its 4 public functions:
