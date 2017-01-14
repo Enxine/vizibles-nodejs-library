@@ -29,4 +29,4 @@ Cloud.connect({
     // TODO: fullfill these fields with values obtained from Vizibles and uncomment next line
     //credentials: {keyId: '<TODO>', secret: '<TODO>'}, 
     onConnected: onConnected, 
-    onDisconnected: onDisconnected);
+    onDisconnected: onDisconnected});
