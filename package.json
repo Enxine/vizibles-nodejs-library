@@ -11,10 +11,10 @@
   "homepage": "https://vizibles.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Enxine/vizibles-clients"
+    "url": "https://github.com/Enxine/vizibles-nodejs-library"
   },
   "bugs": {
-    "url": "https://github.com/Enxine/vizibles-clients/issues"
+    "url": "https://github.com/Enxine/vizibles-nodejs-library/issues"
   },
   "author": "Enxine <info@vizibles.com> (https://vizibles.com)",
   "license": "BSD-2-Clause",
