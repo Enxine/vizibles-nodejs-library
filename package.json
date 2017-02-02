@@ -1,6 +1,6 @@
 {
   "name": "vizibles",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Library to connect with Vizibles from Node.js clients",
   "keywords": [
     "vizibles",
