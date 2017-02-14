@@ -1,4 +1,3 @@
-var request = require('request');
 var config = require('../config.js');
 var Cloud = require('../../cloud.js');
 var status = 'off';

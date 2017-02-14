@@ -1,5 +1,4 @@
 var crypto = require('crypto');
-var _ = require('lodash');
 var ITTT = require('./ittt.js')
 var http = require('http');
 var url = require('url');
@@ -293,12 +292,23 @@ function setStatus(pStatus, pErr) {
     }
 }
 
+// A more complete and versatile solution would be to use the _.merge() from
+// lodash, but doing in this way we avoid the lodash dependency, and so getting
+// vizibles package lighter
+function merge(obj1, obj2) {
+    var result = Object.assign({}, obj1, obj2);
+    if (obj1.server && obj2.server) result.server = Object.assign(obj1.server, obj2.server);
+    if (obj1.ack && obj2.ack) result.ack = Object.assign(obj1.ack, obj2.ack);
+    if (obj1.monitor && obj2.monitor) result.monitor = Object.assign(obj1.monitor, obj2.monitor);
+    return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
 Cloud.connect = function(options) {
-    config.options = _.merge({}, config.options, options);
+    config.options = merge(config.options, options);
     platform = require('./platforms/' + config.options.platform + '/platform.js');
     ITTT.init(cloudData);
     if (config.options.server.enabled) {
