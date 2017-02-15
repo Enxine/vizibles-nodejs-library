@@ -1,4 +1,4 @@
-var request = require('request');
+var http = require('http');
 var crypto = require('crypto');
 var config = require('./config.js');
 var common = require('./common.js');
@@ -10,16 +10,16 @@ function registerAction(name, fn) {
     actions[name] = fn;
 }
 
-function addAuthorization(options, thingDest) {
+function addAuthorization(options, params, thingDest) {
     var Cloud = require('./cloud.js');
     var ticket = cloudData.tickets[thingDest];
     if (common.thingId && ticket) {
         var date = new Date().toUTCString();
         var text = options.method + "\n"
-            + options.url + "\n"
+	    + "http://" + options.host + ":" + options.port + options.path + "\n"
             + options.headers['Content-Type'] + "\n"
             + date + "\n";
-        text += options.json? JSON.stringify(options.json) : '';
+        text += params ? JSON.stringify(params) : '';
         options.headers['VZ-Date'] = date;
         options.headers['authorization'] = 'VIZIBLES ' + common.thingId + ':' + crypto.createHmac('sha1', new Buffer(ticket, 'ascii')).update(text).digest('base64');
     }
@@ -27,30 +27,36 @@ function addAuthorization(options, thingDest) {
 
 function runTask(params, thingDest, functionId) {
     var Cloud = require('./cloud.js');
+
     var options = {
-        url: 'http://' + cloudData.lanAddresses[thingDest] + ':5000/do/' + functionId,
+	host: cloudData.lanAddresses[thingDest],
+	port: '5000',
+	path: '/do/' + functionId,
         method: 'POST',
-        headers: {
+
+	headers: {
             'Content-Type': 'application/json',
+	    'Content-Length': JSON.stringify(params).length,
             'Accept': 'application/json'
         },
-        json: {
-            'params': params
-        }
     };
+
     //TODO do something with the task id to avoid repeating tasks
     //options.json['task'] = "1234567890";
-    addAuthorization(options, thingDest);
+    addAuthorization(options, params, thingDest);
     process.nextTick(function() {
-        request(options, function(err, response, body) {
-            if (err) {
-                //console.log('[ittt] runTask(). err: ' + err);
-                return;
+	var post_req = http.request(options, function(res) {
+	    if (res.statusCode !== 200) {
+                //console.log('[ittt] res.statusCode: ' + res.statusCode);
             }
-            if (response.statusCode !== 200) {
-                console.log('[ittt] response.statusCode: ' + response.statusCode);
-            }
-        });
+	    res.setEncoding('utf8');
+	});
+
+	post_req.on('error', function(e) {
+	    //console.log('problem with request: ' + e.message);
+	});
+	post_req.write(JSON.stringify(params));
+	post_req.end();
     });     
 }
 
