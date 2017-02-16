@@ -294,12 +294,27 @@ function setStatus(pStatus, pErr) {
 
 // A more complete and versatile solution would be to use the _.merge() from
 // lodash, but doing in this way we avoid the lodash dependency, and so getting
-// vizibles package lighter
-function merge(obj1, obj2) {
-    var result = Object.assign({}, obj1, obj2);
-    if (obj1.server && obj2.server) result.server = Object.assign(obj1.server, obj2.server);
-    if (obj1.ack && obj2.ack) result.ack = Object.assign(obj1.ack, obj2.ack);
-    if (obj1.monitor && obj2.monitor) result.monitor = Object.assign(obj1.monitor, obj2.monitor);
+// vizibles package lighter. Even, using Object.assign() is a more clean
+// solution, but it fails in older node versions.
+// So it is an ugly, light, and ad-hoc version, because it need to be revised
+// each time that a new option is defined.
+function mergeOptions(defaultOptions, options) {
+    var result = defaultOptions;
+    if (options.hasOwnProperty('protocol')) result.protocol = options.protocol;
+    if (options.hasOwnProperty('hostname')) result.hostname = options.hostname;
+    if (options.hasOwnProperty('port')) result.port = options.port;
+    if (options.hasOwnProperty('path')) result.path = options.path;
+    if (options.hasOwnProperty('id')) result.id = options.id;
+    if (options.hasOwnProperty('platform')) result.platform = options.platform;
+    if (options.hasOwnProperty('onConnected')) result.onConnected = options.onConnected;
+    if (options.hasOwnProperty('onDisconnected')) result.onDisconnected = options.onDisconnected;
+    if (options.hasOwnProperty('credentials')) result.credentials = options.credentials;
+    if (options.hasOwnProperty('server')) {
+	if (options.server.hasOwnProperty('enabled')) result.server.enabled = options.server.enabled;
+	if (options.server.hasOwnProperty('port')) result.server.port = options.server.port;
+    }
+    if (options.hasOwnProperty('ack')) result.ack = options.ack;
+    if (options.hasOwnProperty('monitor')) result.monitor = options.monitor;
     return result;
 }
 
@@ -308,7 +323,7 @@ function merge(obj1, obj2) {
 ////////////////////////////////////////////////////////////////////////////////
 
 Cloud.connect = function(options) {
-    config.options = merge(config.options, options);
+    config.options = mergeOptions(config.options, options);
     platform = require('./platforms/' + config.options.platform + '/platform.js');
     ITTT.init(cloudData);
     if (config.options.server.enabled) {
