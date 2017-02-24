@@ -1,28 +1,30 @@
-var config = require('../config.js');
-var Cloud = require('../../cloud.js');
+var vizibles = require('vizibles');
 var status = 'off';
-var cloudConnectionOpened = false;
+var connected = false;
 
 function onConnected() {
     console.log('[light-switch] onConnected()');
-    if (!cloudConnectionOpened) {
-        cloudConnectionOpened = true;
+    if (!connected) {
+        connected = true;
         setInterval(function() {
             status = (status == 'off') ? 'on' : 'off';
             console.log('[light-switch] Updating status to: ' + status);
-            Cloud.update({ 'status': status });
+            vizibles.update({ 'status': status });
         }, 5000);
     }
 }
 
 function onDisconnected(err) {
     console.log('[light-switch] onDisconnected(' + err + ')');
-    cloudConnectionOpened = false;
+    connected = false;
 }
 
-Cloud.connect({
+vizibles.connect({
     id: 'light-switch',
     server: {enabled: false},
-    credentials: config.defaults.apiKey, 
+    // TODO: replace the <TODO> strings with values obtained from Vizibles and
+    // then uncomment next line
+    //credentials: {keyId: '<TODO>', secret: '<TODO>'},
     onConnected: onConnected, 
-    onDisconnected: onDisconnected});
+    onDisconnected: onDisconnected
+});

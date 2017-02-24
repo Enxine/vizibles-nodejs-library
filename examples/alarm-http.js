@@ -1,6 +1,6 @@
-var Cloud = require('../../cloud.js');
-var config = require('../config.js');
-var cloudConnectionOpened = false;
+var vizibles = require('vizibles');
+
+var connected = false;
 var events = [
     ['Fire', ['yes','extinct']],
     ['Window', ['open','closed']], 
@@ -15,23 +15,28 @@ function randomInt (low, high) {
 }
 
 function onConnected() {
-    if (!cloudConnectionOpened) {
-        cloudConnectionOpened = true;
+    if (!connected) {
+	console.log('connected');
+        connected = true;
         setInterval(function() {
             var event = events[randomInt(0, events.length -1)];
-            Cloud.update({'Event': event[0] + ' ' + event[1][randomInt(0, event[1].length -1)] });
+            vizibles.update({'Event': event[0] + ' ' + event[1][randomInt(0, event[1].length -1)] });
         }, 5000);       
     }
 }
 
 function onDisconnected(err) {
-    cloudConnectionOpened = false;
+    console.log('disconnected');
+    connected = false;
 }
 
-Cloud.connect({
-    id:'alarm',
+vizibles.connect({
+    id: 'alarm',
     protocol: 'http',
     port: 80,
-    credentials: config.defaults.apiKey,
+    // TODO: replace the <TODO> strings with values obtained from Vizibles and
+    // then uncomment next line
+    credentials: {keyId: '<TODO>', secret: '<TODO>'},
     onConnected: onConnected,
-    onDisconnected: onDisconnected});
+    onDisconnected: onDisconnected
+});
