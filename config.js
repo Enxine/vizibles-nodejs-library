@@ -2,8 +2,8 @@ var config = {};
 
 config.options = {
     protocol: 'wss',
-    hostname: 'api.vizibles.com', // for development: 'localhost'
-    port: 443,                    // for development: 8443
+    hostname: 'api.vizibles.com',
+    port: 443,
     path: '/thing',
     credentials: null,
     server: {enabled: true, port: 5000},

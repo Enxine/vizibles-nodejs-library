@@ -216,6 +216,7 @@ function send(command, param) {
         wssConnection.send(command, param, callback);
         break;
     case 'http':
+    case 'https':
         httpConnection.send(command, param, callback);
         break;
     }
@@ -235,6 +236,7 @@ function connect(callback) {
                     wssConnection.connect(cloudData, callback);
                     break;
                 case 'http':
+                case 'https':
                     httpConnection.connect(cloudData, callback);
                     break;
                 }
@@ -253,8 +255,7 @@ function setStatus(pStatus, pErr) {
         connect(function(err, data) {
             if (err) {
                 setStatus('ap', err);
-            }
-            else {
+            } else {
                 if (data && data.thingId) {
                     common.thingId = data.thingId;
                 }

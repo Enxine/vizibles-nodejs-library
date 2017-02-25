@@ -1,5 +1,6 @@
 var config = require('./config.js');
 var http = require('http');
+var https = require('https');
 var crypto = require('crypto');
 
 var httpConnection = {};
@@ -11,7 +12,7 @@ httpConnection.send = function(cmd, ob, callback) {
     var date = new Date().toUTCString();
     //Create body content following the common Vizibles protocols
     var body = ob;
-    var path = '/api/things/me';
+    var path = '/things/me';
     switch (cmd) {
     case 't:update':
         path +='/update';
@@ -41,12 +42,13 @@ httpConnection.send = function(cmd, ob, callback) {
     //Create text to be part of the signature
     var ids = config.options.id;
     if (ids && config.options.type) ids += ':' + config.options.type;
+    var protocol = (config.options.protocol === 'http') ? "http" : "https";
     var text = "POST\n"
-        + "http://" + config.options.hostname + ':' + config.options.port + path + "\n"
+        + protocol + "://" + config.options.hostname + ':' + config.options.port + path + "\n"
         + "application/json\n"
         + (ids? (ids + "\n") : '')
-        + date + "\n"
-        + JSON.stringify(body);
+	+ date + "\n"
+	+ JSON.stringify(body);
     //Create key signature  
     var signature = crypto.createHmac('sha1', new Buffer(config.options.credentials.secret, 'ascii')).update(text).digest('base64');
     //Create options object for HTTP request including additional
@@ -82,10 +84,18 @@ httpConnection.send = function(cmd, ob, callback) {
         });
     }
     //Make the actual call and send http request
-    var req = http.request(options, requestCallback).on('error', function(e) {
-        callback(e);
-    });
-    req.end(JSON.stringify(body));
+    if (config.options.protocol === 'http') {
+	var req = http.request(options, requestCallback).on('error', function(e) {
+            callback(e);
+	});
+	req.end(JSON.stringify(body));
+    } else if (config.options.protocol === 'https') {
+	var req = https.request(options, requestCallback).on('error', function(e) {
+            callback(e);
+	});
+	req.end(JSON.stringify(body));
+    }
+    
 }
 
 httpConnection.connect = function(cloudData, callback) {

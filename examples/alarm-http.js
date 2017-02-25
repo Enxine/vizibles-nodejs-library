@@ -32,8 +32,7 @@ function onDisconnected(err) {
 
 vizibles.connect({
     id: 'alarm',
-    protocol: 'http',
-    port: 80,
+    protocol: 'https',
     // TODO: replace the <TODO> strings with values obtained from Vizibles and
     // then uncomment next line
     credentials: {keyId: '<TODO>', secret: '<TODO>'},
