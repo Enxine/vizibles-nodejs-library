@@ -117,7 +117,16 @@ wssConnection.connect = function(cloudData, callback) {
         case 'me':
             if (data.thingId) common.thingId = data.thingId;
             break;
-        case 'updateAck':
+        case 'getResult':
+            for (var i = 0; i < wssConnection.pendingCallbacks.length; i++) {
+                if (wssConnection.pendingCallbacks[i].n == ob.n) {
+                    wssConnection.pendingCallbacks[i].callback.call(null, null, ob.p);
+                    wssConnection.pendingCallbacks.splice(i, 1);
+                    break;
+                }
+            }
+	    break;
+	case 'updateAck':
         case 'functionsAck':
         case 'delFunctionsAck':
         case 'resultAck':

@@ -206,18 +206,19 @@ function listen(port) {
     }).listen(port);
 }
 
-function send(command, param) {
-    function callback(err, data) {
+function send(command, param, callback) {
+    function cb(err, data) {
         if (err) setStatus('ap', err);
+	if (callback) callback(err, data);
     }
     switch (config.options.protocol) {
     case 'ws':
     case 'wss':
-        wssConnection.send(command, param, callback);
+        wssConnection.send(command, param, cb);
         break;
     case 'http':
     case 'https':
-        httpConnection.send(command, param, callback);
+        httpConnection.send(command, param, cb);
         break;
     }
 }
@@ -364,6 +365,10 @@ Cloud.expose = function(functionId, f) {
 Cloud.unexpose = function(functionId) {
     delete cloudData.exposed[functionId];
     send('t:delFunctions', [functionId]);
+}
+
+Cloud.get = function(attributes, callback) {
+    send('t:get', attributes, callback);
 }
 
 module.exports = Cloud;
