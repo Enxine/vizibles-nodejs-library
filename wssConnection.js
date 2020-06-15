@@ -14,6 +14,39 @@ var wssConnection = {
     pendingCallbacks: []
 };
 
+function startPingPong(socket) {
+    if (config.options.websocket.keepAlive) {
+        socket.pingPongStatus = {pingInterval: null, pongInterval: null, pongReceived: false};
+	socket.pingPongStatus.pingInterval = setInterval(function() {
+	    if ((socket.pingPongStatus !== undefined) && (socket.readyState == socket.OPEN)) {
+		socket.pingPongStatus.pongReceived = false;
+	    	socket.ping();
+		socket.pingPongStatus.pongTimeout = setTimeout(function() {
+		    // Check pong
+		    if ((socket.pingPongStatus !== undefined) && (!socket.pingPongStatus.pongReceived)) {
+			clearInterval(socket.pingPongStatus.pingInterval);
+			socket.terminate();
+		    }
+		}, config.options.websocket.keepAlivePongTimeout);
+	    }
+	}, config.options.websocket.keepAlivePingInterval);
+    }
+}
+
+function stopPingPong(socket) {
+    if (config.options.websocket.keepAlive) {
+	if (socket.pingPongStatus !== undefined) {
+	    if (socket.pingPongStatus.pingInterval) {
+		clearInterval(socket.pingPongStatus.pingInterval);
+	    }
+	    if (socket.pingPongStatus.pongTimeout) {
+		clearInterval(socket.pingPongStatus.pongTimeout);
+	    }
+            socket.pingPongStatus = undefined;
+	}
+    }
+}
+
 wssConnection.send = function(cmd, ob, callback) {
     if (wssConnection.socket && wssConnection.socket.readyState == wssConnection.socket.OPEN) {
         wssConnection.nMsg++;
@@ -85,6 +118,7 @@ wssConnection.connect = function(cloudData, callback) {
     }
     wssConnection.socket.on('open', function() {
         LOG('[wssConnection] connection open [' + config.options.hostname + ']');
+        startPingPong(wssConnection.socket);
         callback(null, {code: 'socket_opened'});
     });
 
@@ -151,6 +185,7 @@ wssConnection.connect = function(cloudData, callback) {
 
     wssConnection.socket.on('close', function(code, message) {
         LOG('[wssConnection] connection closed, c: ' + code + ', m: ' + message);
+        stopPingPong(wssConnection.socket);
         // Unrecoverable with ping-pong checking mechanism
         callback({code: 'socket_closed'});
     });
@@ -163,6 +198,9 @@ wssConnection.connect = function(cloudData, callback) {
 
     wssConnection.socket.on('pong', function() {
         LOG('[wssConnection] pong');
+        if (wssConnection.socket.pingPongStatus !== undefined) {
+	    wssConnection.socket.pingPongStatus.pongReceived = true;
+	}
         callback(null, {code: 'pong'});
     });
 }
