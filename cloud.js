@@ -317,6 +317,11 @@ function mergeOptions(defaultOptions, options) {
     }
     if (options.hasOwnProperty('ack')) result.ack = options.ack;
     if (options.hasOwnProperty('monitor')) result.monitor = options.monitor;
+    if (options.hasOwnProperty('websocket')) {
+	if (options.websocket.hasOwnProperty('keepAlive')) result.websocket.keepAlive = options.websocket.keepAlive;
+	if (options.websocket.hasOwnProperty('keepAlivePingInterval')) result.websocket.keepAlivePingInterval = options.websocket.keepAlivePingInterval;
+	if (options.websocket.hasOwnProperty('keepAlivePongTimeout')) result.websocket.keepAlivePongTimeout = options.websocket.keepAlivePongTimeout;
+    }
     return result;
 }
 
