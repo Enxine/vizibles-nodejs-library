@@ -341,7 +341,7 @@ Cloud.connect = function(options) {
 
 // TODO: [66] Cloud.disconnect
 
-Cloud.update = function(attributes) {
+Cloud.update = function(attributes, callback) {
     // First, evaluate ittts
     var executed = [];
     cloudData.ittts.forEach(function(ittt) {
@@ -355,7 +355,7 @@ Cloud.update = function(attributes) {
     if (executed.length > 0) attributes['_Meta:'] = { 'ITTTDone': executed };
 
     // Then, send the updates to the cloud
-    send('t:update', attributes);
+    send('t:update', attributes, callback);
 }
 
 Cloud.expose = function(functionId, f) {
