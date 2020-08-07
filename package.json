@@ -19,7 +19,7 @@
   "author": "Enxine <info@vizibles.com> (https://vizibles.com)",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "ws": "~1.0.1"
+    "ws": "~7.3.0"
   },
   "devDependencies": {
     "log-timestamp": "^0.1.2"
